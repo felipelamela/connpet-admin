@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Users, Package, ShoppingCart, DollarSign } from "lucide-react";
 import { toast } from "sonner";
-import { Navbar } from "@/components/navbar";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -33,10 +33,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar />
-
-      {/* Main Content */}
+    <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -166,7 +163,7 @@ export default function DashboardPage() {
           </Card>
         </div>
       </main>
-    </div>
+    </LayoutWrapper>
   );
 }
 

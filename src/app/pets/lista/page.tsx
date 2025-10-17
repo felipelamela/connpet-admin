@@ -15,37 +15,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { PawPrint, Plus, Search, Edit, Trash2 } from "lucide-react";
 
-interface Product {
+interface Pet {
   id: string;
   name: string;
-  type: string;
-  quantity: number;
-  price: number;
-  validatedAt: string | null;
+  species: string;
+  breed: string;
+  gender: string;
+  birthDate: string;
+  active: boolean;
 }
 
-export default function ListaProdutosPage() {
+export default function ListaPetsPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>([
+  const [pets, setPets] = useState<Pet[]>([
     {
       id: "1",
-      name: "Ração Premium 15kg",
-      type: "FOOD",
-      quantity: 50,
-      price: 89.90,
-      validatedAt: "2025-12-31",
+      name: "Rex",
+      species: "Canino",
+      breed: "Labrador",
+      gender: "Macho",
+      birthDate: "2020-05-15",
+      active: true,
     },
     {
       id: "2",
-      name: "Antipulgas",
-      type: "MEDICINE",
-      quantity: 30,
-      price: 45.50,
-      validatedAt: "2026-06-30",
+      name: "Mimi",
+      species: "Felino",
+      breed: "Persa",
+      gender: "Fêmea",
+      birthDate: "2021-03-20",
+      active: true,
     },
   ]);
 
@@ -56,37 +59,26 @@ export default function ListaProdutosPage() {
       router.push("/login");
     } else {
       setIsLoading(false);
-      // TODO: Carregar produtos da API
+      // TODO: Carregar pets da API
     }
   }, [router]);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPets = pets.filter((pet) =>
+    pet.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getTypeLabel = (type: string) => {
-    const types: { [key: string]: string } = {
-      MEDICINE: "Medicamento",
-      FOOD: "Alimento",
-      TOY: "Brinquedo",
-      HYGIENE: "Higiene",
-      ACCESSORY: "Acessório",
-    };
-    return types[type] || type;
-  };
-
   const handleEdit = (id: string) => {
-    router.push(`/produtos/editar?id=${id}`);
+    router.push(`/pets/editar?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Tem certeza que deseja excluir este produto?")) {
+    if (confirm("Tem certeza que deseja excluir este pet?")) {
       try {
         // TODO: Implementar chamada à API
-        toast.success("Produto excluído com sucesso!");
-        setProducts(products.filter((product) => product.id !== id));
+        toast.success("Pet excluído com sucesso!");
+        setPets(pets.filter((pet) => pet.id !== id));
       } catch (error) {
-        toast.error("Erro ao excluir produto");
+        toast.error("Erro ao excluir pet");
       }
     }
   };
@@ -103,24 +95,24 @@ export default function ListaProdutosPage() {
     <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Lista de Produtos</h1>
-          <p className="text-muted-foreground">Gerencie o catálogo de produtos</p>
+          <h1 className="text-3xl font-bold mb-2">Lista de Pets</h1>
+          <p className="text-muted-foreground">Gerencie todos os pets cadastrados</p>
         </div>
 
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
-                <CardTitle>Produtos Cadastrados</CardTitle>
+                <PawPrint className="h-5 w-5" />
+                <CardTitle>Pets Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/produtos/cadastrar")}>
+              <Button onClick={() => router.push("/pets/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
-                Novo Produto
+                Novo Pet
               </Button>
             </div>
             <CardDescription>
-              Lista completa de produtos registrados no sistema
+              Lista completa de pets registrados no sistema
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -141,50 +133,55 @@ export default function ListaProdutosPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Nome</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead>Quantidade</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Validade</TableHead>
+                    <TableHead>Espécie</TableHead>
+                    <TableHead>Raça</TableHead>
+                    <TableHead>Sexo</TableHead>
+                    <TableHead>Data Nascimento</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProducts.length === 0 ? (
+                  {filteredPets.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center">
-                        Nenhum produto encontrado
+                      <TableCell colSpan={7} className="text-center">
+                        Nenhum pet encontrado
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell>{getTypeLabel(product.type)}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
+                    filteredPets.map((pet) => (
+                      <TableRow key={pet.id}>
+                        <TableCell className="font-medium">{pet.name}</TableCell>
+                        <TableCell>{pet.species}</TableCell>
+                        <TableCell>{pet.breed}</TableCell>
+                        <TableCell>{pet.gender}</TableCell>
                         <TableCell>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(product.price)}
+                          {new Date(pet.birthDate).toLocaleDateString("pt-BR")}
                         </TableCell>
                         <TableCell>
-                          {product.validatedAt
-                            ? new Date(product.validatedAt).toLocaleDateString("pt-BR")
-                            : "-"}
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              pet.active
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {pet.active ? "Ativo" : "Inativo"}
+                          </span>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleEdit(product.id)}
+                              onClick={() => handleEdit(pet.id)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => handleDelete(pet.id)}
                             >
                               <Trash2 className="h-4 w-4 text-red-500" />
                             </Button>

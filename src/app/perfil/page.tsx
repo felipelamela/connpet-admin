@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Navbar } from "@/components/navbar";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "lucide-react";
 
@@ -30,8 +30,7 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar />
+    <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Meu Perfil</h1>
@@ -63,7 +62,7 @@ export default function PerfilPage() {
           </CardContent>
         </Card>
       </main>
-    </div>
+    </LayoutWrapper>
   );
 }
 

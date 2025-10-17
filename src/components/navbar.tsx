@@ -31,24 +31,32 @@ import {
   FlaskConical,
   LogOut,
   User,
-  Settings
+  Settings,
+  Users,
+  Pill,
+  Syringe,
+  Bed,
+  DollarSign,
+  Building2,
+  CreditCard
 } from "lucide-react";
 import { toast } from "sonner";
 
 const menuItems = [
   {
-    title: "Pet",
-    icon: PawPrint,
-    items: [
-      { title: "Cadastrar Pet", href: "/pets/cadastrar" },
-      { title: "Cadastrar Tutor", href: "/tutores/cadastrar" },
-      { title: "Editar Cadastro", href: "/pets/editar" },
-    ],
-  },
-  {
     title: "Dashboard",
     icon: LayoutDashboard,
     href: "/dashboard",
+  },
+  {
+    title: "Pets",
+    icon: PawPrint,
+    items: [
+      { title: "Lista de Pets", href: "/pets/lista" },
+      { title: "Cadastrar Pet", href: "/pets/cadastrar" },
+      { title: "Lista de Tutores", href: "/tutores/lista" },
+      { title: "Cadastrar Tutor", href: "/tutores/cadastrar" },
+    ],
   },
   {
     title: "Consultas",
@@ -58,7 +66,6 @@ const menuItems = [
       { title: "Lista de consultas", href: "/consultas/lista" },
       { title: "Histórico", href: "/consultas/historico" },
     ],
-    className: "grid w-[250px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
   },
   {
     title: "Agendamentos",
@@ -69,7 +76,8 @@ const menuItems = [
     title: "Produtos",
     icon: Package,
     items: [
-      { title: "Lista de produtos", href: "/produtos/lista" },
+      { title: "Lista de Produtos", href: "/produtos/lista" },
+      { title: "Cadastrar Produto", href: "/produtos/cadastrar" },
     ],
   },
   {
@@ -78,6 +86,57 @@ const menuItems = [
     items: [
       { title: "Cadastrar Pedido", href: "/exames/cadastrar" },
       { title: "Listagem Exames | Resultados", href: "/exames/listagem" },
+    ],
+  },
+  {
+    title: "Vacinações",
+    icon: Syringe,
+    items: [
+      { title: "Lista de Vacinações", href: "/vacinacoes/lista" },
+      { title: "Cadastrar Vacinação", href: "/vacinacoes/cadastrar" },
+      { title: "Tipos de Vacina", href: "/tipos-vacina/lista" },
+    ],
+  },
+  {
+    title: "Medicamentos",
+    icon: Pill,
+    items: [
+      { title: "Lista de Medicamentos", href: "/medicamentos/lista" },
+      { title: "Cadastrar Medicamento", href: "/medicamentos/cadastrar" },
+    ],
+  },
+  {
+    title: "Internações",
+    icon: Bed,
+    items: [
+      { title: "Lista de Internações", href: "/internacoes/lista" },
+      { title: "Cadastrar Internação", href: "/internacoes/cadastrar" },
+    ],
+  },
+  {
+    title: "Equipe",
+    icon: Users,
+    items: [
+      { title: "Lista de Funcionários", href: "/funcionarios/lista" },
+      { title: "Cadastrar Funcionário", href: "/funcionarios/cadastrar" },
+      { title: "Lista de Serviços", href: "/servicos/lista" },
+      { title: "Cadastrar Serviço", href: "/servicos/cadastrar" },
+    ],
+  },
+  {
+    title: "Financeiro",
+    icon: DollarSign,
+    items: [
+      { title: "Lista de Pagamentos", href: "/pagamentos/lista" },
+      { title: "Planos", href: "/planos/lista" },
+    ],
+  },
+  {
+    title: "Clínica",
+    icon: Building2,
+    items: [
+      { title: "Perfil da Clínica", href: "/clinica/perfil" },
+      { title: "Configurações", href: "/configuracoes" },
     ],
   },
 ];

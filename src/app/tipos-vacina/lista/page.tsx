@@ -15,37 +15,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { Syringe, Plus, Search, Edit, Trash2 } from "lucide-react";
 
-interface Product {
+interface VaccineType {
   id: string;
   name: string;
-  type: string;
-  quantity: number;
-  price: number;
-  validatedAt: string | null;
+  species: string;
+  manufacturer: string;
+  dosesRequired: number;
+  isRequired: boolean;
+  active: boolean;
 }
 
-export default function ListaProdutosPage() {
+export default function ListaTiposVacinaPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>([
+  const [vaccineTypes, setVaccineTypes] = useState<VaccineType[]>([
     {
       id: "1",
-      name: "Ração Premium 15kg",
-      type: "FOOD",
-      quantity: 50,
-      price: 89.90,
-      validatedAt: "2025-12-31",
+      name: "V10",
+      species: "DOG",
+      manufacturer: "Laboratório ABC",
+      dosesRequired: 3,
+      isRequired: true,
+      active: true,
     },
     {
       id: "2",
-      name: "Antipulgas",
-      type: "MEDICINE",
-      quantity: 30,
-      price: 45.50,
-      validatedAt: "2026-06-30",
+      name: "Antirrábica",
+      species: "DOG",
+      manufacturer: "Laboratório XYZ",
+      dosesRequired: 1,
+      isRequired: true,
+      active: true,
     },
   ]);
 
@@ -56,37 +59,31 @@ export default function ListaProdutosPage() {
       router.push("/login");
     } else {
       setIsLoading(false);
-      // TODO: Carregar produtos da API
     }
   }, [router]);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredVaccineTypes = vaccineTypes.filter((vt) =>
+    vt.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getTypeLabel = (type: string) => {
-    const types: { [key: string]: string } = {
-      MEDICINE: "Medicamento",
-      FOOD: "Alimento",
-      TOY: "Brinquedo",
-      HYGIENE: "Higiene",
-      ACCESSORY: "Acessório",
+  const getSpeciesLabel = (species: string) => {
+    const speciesMap: { [key: string]: string } = {
+      DOG: "Cão",
+      CAT: "Gato",
+      BIRD: "Ave",
+      RABBIT: "Coelho",
+      OTHER: "Outro",
     };
-    return types[type] || type;
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/produtos/editar?id=${id}`);
+    return speciesMap[species] || species;
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Tem certeza que deseja excluir este produto?")) {
+    if (confirm("Tem certeza que deseja excluir este tipo de vacina?")) {
       try {
-        // TODO: Implementar chamada à API
-        toast.success("Produto excluído com sucesso!");
-        setProducts(products.filter((product) => product.id !== id));
+        toast.success("Tipo de vacina excluído com sucesso!");
+        setVaccineTypes(vaccineTypes.filter((vt) => vt.id !== id));
       } catch (error) {
-        toast.error("Erro ao excluir produto");
+        toast.error("Erro ao excluir tipo de vacina");
       }
     }
   };
@@ -103,24 +100,24 @@ export default function ListaProdutosPage() {
     <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Lista de Produtos</h1>
-          <p className="text-muted-foreground">Gerencie o catálogo de produtos</p>
+          <h1 className="text-3xl font-bold mb-2">Tipos de Vacina</h1>
+          <p className="text-muted-foreground">Gerencie os tipos de vacinas disponíveis</p>
         </div>
 
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
-                <CardTitle>Produtos Cadastrados</CardTitle>
+                <Syringe className="h-5 w-5" />
+                <CardTitle>Tipos de Vacina Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/produtos/cadastrar")}>
+              <Button onClick={() => router.push("/tipos-vacina/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
-                Novo Produto
+                Novo Tipo de Vacina
               </Button>
             </div>
             <CardDescription>
-              Lista completa de produtos registrados no sistema
+              Lista completa de tipos de vacinas registrados
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -141,50 +138,63 @@ export default function ListaProdutosPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Nome</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead>Quantidade</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Validade</TableHead>
+                    <TableHead>Espécie</TableHead>
+                    <TableHead>Fabricante</TableHead>
+                    <TableHead>Doses</TableHead>
+                    <TableHead>Obrigatória</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProducts.length === 0 ? (
+                  {filteredVaccineTypes.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center">
-                        Nenhum produto encontrado
+                      <TableCell colSpan={7} className="text-center">
+                        Nenhum tipo de vacina encontrado
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell>{getTypeLabel(product.type)}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
+                    filteredVaccineTypes.map((vt) => (
+                      <TableRow key={vt.id}>
+                        <TableCell className="font-medium">{vt.name}</TableCell>
+                        <TableCell>{getSpeciesLabel(vt.species)}</TableCell>
+                        <TableCell>{vt.manufacturer}</TableCell>
+                        <TableCell>{vt.dosesRequired}</TableCell>
                         <TableCell>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(product.price)}
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              vt.isRequired
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {vt.isRequired ? "Sim" : "Não"}
+                          </span>
                         </TableCell>
                         <TableCell>
-                          {product.validatedAt
-                            ? new Date(product.validatedAt).toLocaleDateString("pt-BR")
-                            : "-"}
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              vt.active
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {vt.active ? "Ativo" : "Inativo"}
+                          </span>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleEdit(product.id)}
+                              onClick={() => router.push(`/tipos-vacina/editar?id=${vt.id}`)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => handleDelete(vt.id)}
                             >
                               <Trash2 className="h-4 w-4 text-red-500" />
                             </Button>

@@ -15,37 +15,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { Users, Plus, Search, Eye, Edit } from "lucide-react";
 
-interface Product {
+interface Employee {
   id: string;
   name: string;
-  type: string;
-  quantity: number;
-  price: number;
-  validatedAt: string | null;
+  email: string;
+  phone: string;
+  role: string;
+  status: boolean;
 }
 
-export default function ListaProdutosPage() {
+export default function ListaFuncionariosPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>([
+  const [employees, setEmployees] = useState<Employee[]>([
     {
       id: "1",
-      name: "Ração Premium 15kg",
-      type: "FOOD",
-      quantity: 50,
-      price: 89.90,
-      validatedAt: "2025-12-31",
+      name: "Dr. Carlos Silva",
+      email: "carlos@clinic.com",
+      phone: "(11) 99999-9999",
+      role: "CLINIC_VET",
+      status: true,
     },
     {
       id: "2",
-      name: "Antipulgas",
-      type: "MEDICINE",
-      quantity: 30,
-      price: 45.50,
-      validatedAt: "2026-06-30",
+      name: "Ana Paula Santos",
+      email: "ana@clinic.com",
+      phone: "(11) 98888-8888",
+      role: "CLINIC_RECEPTIONIST",
+      status: true,
     },
   ]);
 
@@ -56,40 +56,25 @@ export default function ListaProdutosPage() {
       router.push("/login");
     } else {
       setIsLoading(false);
-      // TODO: Carregar produtos da API
     }
   }, [router]);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getTypeLabel = (type: string) => {
-    const types: { [key: string]: string } = {
-      MEDICINE: "Medicamento",
-      FOOD: "Alimento",
-      TOY: "Brinquedo",
-      HYGIENE: "Higiene",
-      ACCESSORY: "Acessório",
+  const getRoleLabel = (role: string) => {
+    const roles: { [key: string]: string } = {
+      ADMIN: "Administrador",
+      CLINIC_ADMIN: "Administrador da Clínica",
+      CLINIC_VET: "Veterinário",
+      CLINIC_STAFF: "Equipe",
+      CLINIC_RECEPTIONIST: "Recepcionista",
     };
-    return types[type] || type;
+    return roles[role] || role;
   };
 
-  const handleEdit = (id: string) => {
-    router.push(`/produtos/editar?id=${id}`);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (confirm("Tem certeza que deseja excluir este produto?")) {
-      try {
-        // TODO: Implementar chamada à API
-        toast.success("Produto excluído com sucesso!");
-        setProducts(products.filter((product) => product.id !== id));
-      } catch (error) {
-        toast.error("Erro ao excluir produto");
-      }
-    }
-  };
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isLoading) {
     return (
@@ -103,24 +88,24 @@ export default function ListaProdutosPage() {
     <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Lista de Produtos</h1>
-          <p className="text-muted-foreground">Gerencie o catálogo de produtos</p>
+          <h1 className="text-3xl font-bold mb-2">Lista de Funcionários</h1>
+          <p className="text-muted-foreground">Gerencie todos os funcionários da clínica</p>
         </div>
 
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
-                <CardTitle>Produtos Cadastrados</CardTitle>
+                <Users className="h-5 w-5" />
+                <CardTitle>Funcionários Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/produtos/cadastrar")}>
+              <Button onClick={() => router.push("/funcionarios/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
-                Novo Produto
+                Novo Funcionário
               </Button>
             </div>
             <CardDescription>
-              Lista completa de produtos registrados no sistema
+              Lista completa de funcionários registrados no sistema
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -128,7 +113,7 @@ export default function ListaProdutosPage() {
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome..."
+                  placeholder="Buscar por nome ou email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-8"
@@ -141,52 +126,53 @@ export default function ListaProdutosPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Nome</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead>Quantidade</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Validade</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Telefone</TableHead>
+                    <TableHead>Cargo</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProducts.length === 0 ? (
+                  {filteredEmployees.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={6} className="text-center">
-                        Nenhum produto encontrado
+                        Nenhum funcionário encontrado
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell>{getTypeLabel(product.type)}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
+                    filteredEmployees.map((employee) => (
+                      <TableRow key={employee.id}>
+                        <TableCell className="font-medium">{employee.name}</TableCell>
+                        <TableCell>{employee.email}</TableCell>
+                        <TableCell>{employee.phone}</TableCell>
+                        <TableCell>{getRoleLabel(employee.role)}</TableCell>
                         <TableCell>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(product.price)}
-                        </TableCell>
-                        <TableCell>
-                          {product.validatedAt
-                            ? new Date(product.validatedAt).toLocaleDateString("pt-BR")
-                            : "-"}
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              employee.status
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {employee.status ? "Ativo" : "Inativo"}
+                          </span>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleEdit(product.id)}
+                              onClick={() => router.push(`/funcionarios/detalhes?id=${employee.id}`)}
                             >
-                              <Edit className="h-4 w-4" />
+                              <Eye className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => router.push(`/funcionarios/editar?id=${employee.id}`)}
                             >
-                              <Trash2 className="h-4 w-4 text-red-500" />
+                              <Edit className="h-4 w-4" />
                             </Button>
                           </div>
                         </TableCell>

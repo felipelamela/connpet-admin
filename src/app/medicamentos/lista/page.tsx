@@ -15,37 +15,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { Pill, Plus, Search, Edit, Trash2 } from "lucide-react";
 
-interface Product {
+interface Medication {
   id: string;
+  petName: string;
   name: string;
-  type: string;
-  quantity: number;
-  price: number;
-  validatedAt: string | null;
+  dosage: string;
+  startDate: string;
+  endDate: string | null;
 }
 
-export default function ListaProdutosPage() {
+export default function ListaMedicamentosPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>([
+  const [medications, setMedications] = useState<Medication[]>([
     {
       id: "1",
-      name: "Ração Premium 15kg",
-      type: "FOOD",
-      quantity: 50,
-      price: 89.90,
-      validatedAt: "2025-12-31",
+      petName: "Rex",
+      name: "Antibiótico XYZ",
+      dosage: "1 comprimido 2x ao dia",
+      startDate: "2025-10-01",
+      endDate: "2025-10-15",
     },
     {
       id: "2",
-      name: "Antipulgas",
-      type: "MEDICINE",
-      quantity: 30,
-      price: 45.50,
-      validatedAt: "2026-06-30",
+      petName: "Mimi",
+      name: "Anti-inflamatório ABC",
+      dosage: "0.5ml 1x ao dia",
+      startDate: "2025-10-10",
+      endDate: null,
     },
   ]);
 
@@ -56,37 +56,22 @@ export default function ListaProdutosPage() {
       router.push("/login");
     } else {
       setIsLoading(false);
-      // TODO: Carregar produtos da API
     }
   }, [router]);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMedications = medications.filter(
+    (med) =>
+      med.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      med.petName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getTypeLabel = (type: string) => {
-    const types: { [key: string]: string } = {
-      MEDICINE: "Medicamento",
-      FOOD: "Alimento",
-      TOY: "Brinquedo",
-      HYGIENE: "Higiene",
-      ACCESSORY: "Acessório",
-    };
-    return types[type] || type;
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/produtos/editar?id=${id}`);
-  };
-
   const handleDelete = async (id: string) => {
-    if (confirm("Tem certeza que deseja excluir este produto?")) {
+    if (confirm("Tem certeza que deseja excluir este medicamento?")) {
       try {
-        // TODO: Implementar chamada à API
-        toast.success("Produto excluído com sucesso!");
-        setProducts(products.filter((product) => product.id !== id));
+        toast.success("Medicamento excluído com sucesso!");
+        setMedications(medications.filter((med) => med.id !== id));
       } catch (error) {
-        toast.error("Erro ao excluir produto");
+        toast.error("Erro ao excluir medicamento");
       }
     }
   };
@@ -103,24 +88,24 @@ export default function ListaProdutosPage() {
     <LayoutWrapper>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Lista de Produtos</h1>
-          <p className="text-muted-foreground">Gerencie o catálogo de produtos</p>
+          <h1 className="text-3xl font-bold mb-2">Lista de Medicamentos</h1>
+          <p className="text-muted-foreground">Gerencie os medicamentos dos pets</p>
         </div>
 
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
-                <CardTitle>Produtos Cadastrados</CardTitle>
+                <Pill className="h-5 w-5" />
+                <CardTitle>Medicamentos Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/produtos/cadastrar")}>
+              <Button onClick={() => router.push("/medicamentos/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
-                Novo Produto
+                Novo Medicamento
               </Button>
             </div>
             <CardDescription>
-              Lista completa de produtos registrados no sistema
+              Lista completa de medicamentos em uso
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -128,7 +113,7 @@ export default function ListaProdutosPage() {
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome..."
+                  placeholder="Buscar por nome do medicamento ou pet..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-8"
@@ -140,51 +125,48 @@ export default function ListaProdutosPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Nome</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead>Quantidade</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Validade</TableHead>
+                    <TableHead>Pet</TableHead>
+                    <TableHead>Medicamento</TableHead>
+                    <TableHead>Dosagem</TableHead>
+                    <TableHead>Início</TableHead>
+                    <TableHead>Término</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProducts.length === 0 ? (
+                  {filteredMedications.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={6} className="text-center">
-                        Nenhum produto encontrado
+                        Nenhum medicamento encontrado
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell>{getTypeLabel(product.type)}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
+                    filteredMedications.map((med) => (
+                      <TableRow key={med.id}>
+                        <TableCell className="font-medium">{med.petName}</TableCell>
+                        <TableCell>{med.name}</TableCell>
+                        <TableCell>{med.dosage}</TableCell>
                         <TableCell>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(product.price)}
+                          {new Date(med.startDate).toLocaleDateString("pt-BR")}
                         </TableCell>
                         <TableCell>
-                          {product.validatedAt
-                            ? new Date(product.validatedAt).toLocaleDateString("pt-BR")
-                            : "-"}
+                          {med.endDate
+                            ? new Date(med.endDate).toLocaleDateString("pt-BR")
+                            : "Em andamento"}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleEdit(product.id)}
+                              onClick={() => router.push(`/medicamentos/editar?id=${med.id}`)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => handleDelete(med.id)}
                             >
                               <Trash2 className="h-4 w-4 text-red-500" />
                             </Button>
