@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ConnPet Admin
 
-## Getting Started
+Painel administrativo do ConnPet construído com Next.js, React, TypeScript e shadcn/ui.
 
-First, run the development server:
+## 🚀 Tecnologias
+
+- **Next.js 15** - Framework React com App Router
+- **React 19** - Biblioteca para construção de interfaces
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **shadcn/ui** - Componentes de interface moderna
+- **Sonner** - Sistema de notificações toast
+
+## 📦 Instalação
 
 ```bash
+# Instalar dependências
+npm install
+
+# Executar o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔐 Sistema de Autenticação
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O projeto inclui um sistema completo de autenticação com:
 
-## Learn More
+### Páginas Implementadas
 
-To learn more about Next.js, take a look at the following resources:
+- **`/login`** - Tela de login responsiva
+- **`/recuperar-senha`** - Recuperação de senha por email
+- **`/dashboard`** - Painel administrativo (protegido)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Funcionalidades
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+✅ Validação de email e senha  
+✅ Estado de carregamento no botão de login  
+✅ Notificações de sucesso e erro  
+✅ Redirecionamento automático após login  
+✅ Proteção de rotas (dashboard requer autenticação)  
+✅ Link "Esqueci a senha" funcional  
+✅ Design responsivo e moderno  
 
-## Deploy on Vercel
+### Credenciais de Teste
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Para testar o sistema, use:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Email:** `admin@connpet.com`
+- **Senha:** `123456`
+
+## 🧭 Menu de Navegação
+
+O sistema possui um menu de navegação completo com as seguintes seções:
+
+### **Pet** 🐾
+- Cadastrar Pet
+- Cadastrar Tutor
+- Editar Cadastro
+
+### **Dashboard** 📊
+- Visão geral do sistema
+
+### **Consultas** 🩺
+- Nova Consulta
+- Lista de consultas
+- Histórico
+
+### **Agendamentos** 📅
+- Gerenciamento de agendamentos
+
+### **Produtos** 📦
+- Lista de produtos
+
+### **Exames** 🧪
+- Cadastrar Pedido
+- Listagem Exames | Resultados
+
+### **Menu de Usuário** 👤
+- Avatar com dropdown
+- Informações do usuário
+- Perfil
+- Configurações
+- Logout
+
+## 📱 Páginas
+
+### Login (`/login`)
+- Campo de email com validação
+- Campo de senha
+- Botão com estado de carregamento
+- Link para recuperação de senha
+- Notificações de sucesso/erro
+- Redirecionamento automático para dashboard
+
+### Recuperar Senha (`/recuperar-senha`)
+- Campo de email para recuperação
+- Confirmação visual de envio
+- Opção para voltar ao login
+- Opção para enviar para outro email
+
+### Dashboard (`/dashboard`)
+- Página protegida (requer autenticação)
+- Cards com estatísticas
+- Atividades recentes
+- Acesso rápido a funcionalidades
+- Menu de navegação completo
+
+## 🎨 Componentes shadcn/ui
+
+Componentes instalados:
+- Button
+- Card
+- Dialog
+- Dropdown Menu
+- Input
+- Label
+- Table
+- Sonner (Toast)
+- Navigation Menu
+- Avatar
+
+## 🔧 Próximos Passos
+
+Para implementar autenticação real, você precisará:
+
+1. **Backend API**: Criar endpoints de autenticação
+2. **JWT/Session**: Implementar sistema de tokens
+3. **API Integration**: Substituir as simulações nas páginas
+4. **Context/State**: Adicionar gerenciamento de estado global (ex: Context API, Zustand)
+5. **Middleware**: Adicionar middleware do Next.js para proteção de rotas
+
+## 📝 Estrutura do Projeto
+
+```
+src/
+├── app/
+│   ├── login/
+│   │   └── page.tsx          # Página de login
+│   ├── recuperar-senha/
+│   │   └── page.tsx          # Página de recuperação
+│   ├── dashboard/
+│   │   └── page.tsx          # Dashboard protegido
+│   ├── layout.tsx            # Layout principal (com Toaster)
+│   └── page.tsx              # Página inicial (redireciona)
+├── components/
+│   └── ui/                   # Componentes shadcn/ui
+└── lib/
+    └── utils.ts              # Utilitários
+```
+
+## 📄 Licença
+
+Este projeto é parte do sistema ConnPet.
