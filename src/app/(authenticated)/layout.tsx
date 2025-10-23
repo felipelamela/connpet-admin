@@ -1,45 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { Navbar } from "@/components/navbar";
+import { useAuth } from "@/contexts/AuthContext";
 
+/**
+ * Layout para rotas autenticadas
+ * Apenas verifica autenticação, não renderiza navbar
+ * Cada módulo tem seu próprio layout com sidebar
+ */
 export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { isAuthenticated, isLoading } = useAuth();
+  const hasRedirected = useRef(false);
 
   useEffect(() => {
-    // Verificar se o usuário está autenticado
-    const token = localStorage.getItem("authToken");
-    
-    if (!token) {
-      toast.error("Você precisa fazer login primeiro");
-      router.push("/login");
-    } else {
-      setIsLoading(false);
+    // Só redirecionar se não autenticado E não estiver carregando
+    if (!isLoading && !isAuthenticated && !hasRedirected.current) {
+      hasRedirected.current = true;
+      console.log('🔄 [AuthenticatedLayout] Não autenticado, redirecionando para /login');
+      
+      setTimeout(() => {
+        router.replace("/login");
+      }, 0);
     }
-  }, [router]);
+  }, [isLoading, isAuthenticated, router]);
 
+  // Loading
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Verificando autenticação...
+          </p>
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
-    </div>
-  );
-}
+  // Não autenticado (aguardando redirecionamento)
+  if (!isAuthenticated) {
+    return null;
+  }
 
+  // Autenticado - renderizar conteúdo (sem navbar/sidebar aqui)
+  // Cada rota decide seu próprio layout
+  return <>{children}</>;
+}

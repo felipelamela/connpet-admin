@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
-  const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -19,43 +18,22 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validação básica
     if (!email || !password) {
-      toast.error("Por favor, preencha todos os campos");
       return;
     }
 
-    // Validação de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("Por favor, insira um email válido");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Simulação de chamada à API (substitua pela sua lógica real)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Exemplo de validação (substitua pela sua lógica real)
-      // Simulando um login bem-sucedido se email for "admin@connpet.com" e senha "123456"
-      if (email === "admin@connpet.com" && password === "123456") {
-        toast.success("Login realizado com sucesso!");
-        
-        // Armazenar token (exemplo)
-        localStorage.setItem("authToken", "fake-token-123");
-        
-        // Redirecionar para o dashboard
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 500);
-      } else {
-        toast.error("Email ou senha incorretos");
-        setIsLoading(false);
-      }
+      await login(email, password);
     } catch (error) {
-      toast.error("Erro ao realizar login. Tente novamente.");
+      // Erros já tratados no AuthContext
+    } finally {
       setIsLoading(false);
     }
   };
@@ -134,4 +112,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

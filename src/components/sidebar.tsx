@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   PawPrint,
   LayoutDashboard,
@@ -137,15 +138,13 @@ const menuItems = [
 ];
 
 export function Sidebar() {
-  const router = useRouter();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    toast.success("Logout realizado com sucesso!");
-    router.push("/login");
+  const handleLogout = async () => {
+    await logout();
   };
 
   const toggleExpanded = (title: string) => {
@@ -263,9 +262,9 @@ export function Sidebar() {
                 <AvatarFallback>AD</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start text-left">
-                <p className="text-sm font-medium">Admin</p>
+                <p className="text-sm font-medium">{user?.name || 'Usuário'}</p>
                 <p className="text-xs text-muted-foreground">
-                  admin@connpet.com
+                  {user?.email || ''}
                 </p>
               </div>
             </Button>
