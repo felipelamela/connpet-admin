@@ -82,7 +82,6 @@ export default function CadastrarVacinacaoPage() {
         observations: formData.observations.trim() || null,
       };
 
-      console.log("Dados da vacinação:", vaccinationData);
       toast.success("Vacinação cadastrada com sucesso!");
       router.push("/clinica/vacinacoes/lista");
     } catch (error) {
@@ -314,10 +313,10 @@ export default function CadastrarVacinacaoPage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.push("/clinica/vacinacoes/lista")}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                   disabled={isSubmitting}
-                  className="flex-1 sm:flex-initial"
                 >
-                  <X className="mr-2 h-4 w-4" />
+                  <X className="mr-2 h-4 w-4 text-gray-700" />
                   Cancelar
                 </Button>
               </div>

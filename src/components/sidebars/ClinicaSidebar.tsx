@@ -72,9 +72,33 @@ export function ClinicaSidebar() {
       ],
     },
     {
+      title: "Grooming",
+      icon: Scissors,
+      items: [
+        { title: "Novo Grooming", href: "/clinica/grooming/nova" },
+        { title: "Lista de Groomings", href: "/clinica/grooming/lista" },
+      ],
+    },
+    {
       title: "Agendamentos",
       icon: Calendar,
       href: "/clinica/agendamentos",
+    },
+    {
+      title: "Pets",
+      icon: PawPrint,
+      items: [
+        { title: "Lista de Pets", href: "/clinica/pets/lista" },
+        { title: "Cadastrar Pet", href: "/clinica/pets/cadastrar" },
+      ],
+    },
+    {
+      title: "Tutores",
+      icon: Users,
+      items: [
+        { title: "Lista de Tutores", href: "/clinica/tutores/lista" },
+        { title: "Cadastrar Tutor", href: "/clinica/tutores/cadastrar" },
+      ],
     },
     {
       title: "Exames",
@@ -109,34 +133,13 @@ export function ClinicaSidebar() {
     {
       title: "Produtos",
       icon: Package,
-      items: [
-        { title: "Lista de Produtos", href: "/clinica/produtos/lista" },
-        { title: "Cadastrar Produto", href: "/clinica/produtos/cadastrar" },
-      ],
+      href:"/clinica/produtos" 
     },
-    {
-      title: "Pets",
-      icon: PawPrint,
-      items: [
-        { title: "Lista de Pets", href: "/clinica/pets/lista" },
-        { title: "Cadastrar Pet", href: "/clinica/pets/cadastrar" },
-      ],
-    },
-    {
-      title: "Tutores",
-      icon: Users,
-      items: [
-        { title: "Lista de Tutores", href: "/clinica/tutores/lista" },
-        { title: "Cadastrar Tutor", href: "/clinica/tutores/cadastrar" },
-      ],
-    },
+
     {
       title: "Serviços",
       icon: Scissors,
-      items: [
-        { title: "Lista de Serviços", href: "/clinica/servicos/lista" },
-        { title: "Cadastrar Serviço", href: "/clinica/servicos/cadastrar" },
-      ],
+      href: "/clinica/servicos",
     },
     {
       title: "Pagamentos",
@@ -146,10 +149,7 @@ export function ClinicaSidebar() {
     {
       title: "Funcionários",
       icon: UserCog,
-      items: [
-        { title: "Lista de Funcionários", href: "/clinica/funcionarios/lista" },
-        { title: "Cadastrar Funcionário", href: "/clinica/funcionarios/cadastrar" },
-      ],
+      href: "/clinica/funcionarios",
     },
     {
       title: "Configurações",
@@ -194,7 +194,7 @@ export function ClinicaSidebar() {
       {/* Logo */}
       <div className="p-6 border-b">
         <Link href="/clinica/dashboard" className="flex items-center gap-2">
-          <Building2 className="h-8 w-8 text-green-600" />
+          <Building2 className="h-8 w-8 text-orange-600" />
           <div className="flex flex-col">
             <span className="font-bold text-lg">ConnPet</span>
             <span className="text-xs text-muted-foreground">Clínica Veterinária</span>
@@ -218,7 +218,7 @@ export function ClinicaSidebar() {
                     className={cn(
                       "w-full flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors",
                       hasActiveChild
-                        ? "text-green-600 font-medium bg-green-50 dark:bg-green-900/20"
+                        ? "text-orange-600 font-medium bg-orange-50 dark:bg-orange-900/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     )}
                   >
@@ -242,7 +242,7 @@ export function ClinicaSidebar() {
                           className={cn(
                             "block px-3 py-2 text-sm rounded-md transition-colors",
                             isActive(subItem.href)
-                              ? "text-green-600 font-medium bg-green-50 dark:bg-green-900/20"
+                              ? "text-orange-600 font-medium bg-orange-50 dark:bg-orange-900/20"
                               : "text-muted-foreground hover:bg-muted hover:text-foreground"
                           )}
                         >
@@ -263,7 +263,7 @@ export function ClinicaSidebar() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors",
                   isActive(item.href || "")
-                    ? "text-green-600 font-medium bg-green-50 dark:bg-green-900/20"
+                    ? "text-orange-600 font-medium bg-orange-50 dark:bg-orange-900/20"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
@@ -326,7 +326,7 @@ export function ClinicaSidebar() {
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 bg-background border-b flex items-center justify-between px-4">
         <Link href="/clinica/dashboard" className="flex items-center gap-2">
-          <Building2 className="h-6 w-6 text-green-600" />
+          <Building2 className="h-6 w-6 text-orange-600" />
           <span className="font-bold text-lg">ConnPet</span>
         </Link>
         <Button

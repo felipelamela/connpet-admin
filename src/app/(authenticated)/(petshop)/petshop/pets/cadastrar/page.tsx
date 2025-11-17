@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PawPrint, Save, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface PetFormData {
   name: string;
@@ -28,8 +30,9 @@ interface PetFormData {
 }
 
 export default function CadastrarPetPage() {
- 
-
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<PetFormData>({
     name: "",
@@ -93,9 +96,6 @@ export default function CadastrarPetPage() {
         active: true,
       };
 
-      // TODO: Implementar chamada à API
-      console.log("Dados do pet:", petData);
-      
       toast.success("Pet cadastrado com sucesso!");
       router.push("/petshop/pets/editar");
     } catch (error) {
@@ -304,7 +304,7 @@ export default function CadastrarPetPage() {
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="submit"
-                  className="flex-1 sm:flex-initial"
+                  className={`flex-1 sm:flex-initial ${buttonColors.default}`}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -324,7 +324,7 @@ export default function CadastrarPetPage() {
                   variant="outline"
                   onClick={handleCancel}
                   disabled={isSubmitting}
-                  className="flex-1 sm:flex-initial"
+                  className={`flex-1 sm:flex-initial ${buttonColors.outline}`}
                 >
                   <X className="mr-2 h-4 w-4" />
                   Cancelar

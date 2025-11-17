@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { PawPrint, Plus, Search, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 import { toast } from "sonner";
 
 interface Pet {
@@ -28,6 +29,8 @@ interface Pet {
 
 export default function ListaPetsPage() {
   const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
  
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -85,7 +88,7 @@ export default function ListaPetsPage() {
                 <PawPrint className="h-5 w-5" />
                 <CardTitle>Pets Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/petshop/pets/cadastrar")}>
+              <Button onClick={() = className={buttonColors.default}> router.push("/petshop/pets/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Novo Pet
               </Button>

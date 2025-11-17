@@ -22,7 +22,6 @@ export default function AuthenticatedLayout({
     // Só redirecionar se não autenticado E não estiver carregando
     if (!isLoading && !isAuthenticated && !hasRedirected.current) {
       hasRedirected.current = true;
-      console.log('🔄 [AuthenticatedLayout] Não autenticado, redirecionando para /login');
       
       setTimeout(() => {
         router.replace("/login");

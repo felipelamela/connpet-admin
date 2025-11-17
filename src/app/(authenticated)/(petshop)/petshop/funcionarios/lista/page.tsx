@@ -78,7 +78,7 @@ export default function ListaFuncionariosPage() {
                 <Users className="h-5 w-5" />
                 <CardTitle>Funcionários Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/petshop/funcionarios/cadastrar")}>
+              <Button onClick={() = className={buttonColors.default}> router.push("/petshop/funcionarios/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Novo Funcionário
               </Button>

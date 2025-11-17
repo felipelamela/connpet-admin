@@ -94,7 +94,6 @@ export default function CadastrarPetPage() {
       };
 
       // TODO: Implementar chamada à API
-      console.log("Dados do pet:", petData);
       
       toast.success("Pet cadastrado com sucesso!");
       router.push("/grooming/pets/editar");

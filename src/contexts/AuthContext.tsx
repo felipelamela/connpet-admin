@@ -5,13 +5,21 @@ import { useRouter } from 'next/navigation';
 import api from '@/services/api';
 import { toast } from 'sonner';
 
+interface PanelSummary {
+  id: string;
+  type: string;
+}
+
 interface User {
   id: string;
   name: string;
   email: string;
-  role: number | null;
+  role: string | null;
   companyId?: string | null;
+  panelId?: string | null;
+  panelType?: string | null;
   veterinaryClinicId?: string | null;
+  panels?: PanelSummary[];
 }
 
 interface AuthContextType {
@@ -21,6 +29,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
+  selectPanel: (panelId: string, panelType: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         setUser(null);
         setIsAuthenticated(false);
+        router.push('/login');
       } finally {
         setIsLoading(false);
       }
@@ -52,10 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
     const validateToken = async () => {
       try {
         await api.get('/auth/verify');
@@ -93,7 +99,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(true);
 
       toast.success('Login realizado com sucesso!');
-      console.log('✅ Login bem-sucedido, redirecionando para seleção de módulo');
 
       router.push('/select-module');
 
@@ -148,6 +153,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  /**
+   * Selecionar painel ativo
+   */
+  const selectPanel = useCallback(async (panelId: string, panelType: string) => {
+    try {
+      const response = await api.post('/auth/select-panel', {
+        panelId,
+        panelType,
+      });
+
+      setUser(response.user);
+      setIsAuthenticated(true);
+      toast.success('Módulo selecionado com sucesso!');
+    } catch (error: any) {
+      const errorMessage = error?.message || 'Não foi possível selecionar o módulo.';
+      toast.error(errorMessage);
+      throw error;
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -156,7 +181,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         login,
         logout,
-        refreshAuth
+        refreshAuth,
+        selectPanel,
       }}
     >
       {children}

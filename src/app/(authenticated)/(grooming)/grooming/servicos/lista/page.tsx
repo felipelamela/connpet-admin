@@ -15,45 +15,60 @@ import {
 import { Stethoscope, Plus, Search, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { ModalCreateServices } from "@/components/modals/ModalCreateServices";
+import { ModalUpdateServices } from "@/components/modals/ModalUpdateServices";
 
 interface Service {
   id: string;
   name: string;
+  description?: string;
+  category: string;
+  duration?: number;
   price: number;
+  commission?: number;
+  active: boolean;
 }
 
 export default function ListaServicosPage() {
   const router = useRouter();
- 
 
   const [searchTerm, setSearchTerm] = useState("");
   const [services, setServices] = useState<Service[]>([
     {
       id: "1",
       name: "Consulta Veterinária",
+      description: "Consulta geral com veterinário",
+      category: "CONSULTATION",
+      duration: 30,
       price: 150.00,
+      commission: 10.00,
+      active: true,
     },
     {
       id: "2",
       name: "Banho e Tosa",
+      description: "Banho completo e tosa conforme raça",
+      category: "BATH_GROOMING",
+      duration: 60,
       price: 80.00,
+      commission: 15.00,
+      active: true,
     },
     {
       id: "3",
       name: "Vacinação",
+      description: "Aplicação de vacinas",
+      category: "VACCINE",
+      duration: 15,
       price: 60.00,
+      commission: 5.00,
+      active: true,
     },
   ]);
-
- 
 
   const filteredServices = services.filter((service) =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handleEdit = (id: string) => {
-    router.push(`/servicos/editar?id=${id}`);
-  };
 
   const handleDelete = async (id: string) => {
     if (confirm("Tem certeza que deseja excluir este serviço?")) {
@@ -79,10 +94,15 @@ export default function ListaServicosPage() {
                 <Stethoscope className="h-5 w-5" />
                 <CardTitle>Serviços Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/grooming/servicos/cadastrar")}>
-                <Plus className="mr-2 h-4 w-4" />
-                Novo Serviço
-              </Button>
+              <ModalCreateServices 
+                trigger={
+                  <Button>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Novo Serviço
+                  </Button>
+                } 
+                system="grooming" 
+              />
             </div>
             <CardDescription>
               Lista completa de serviços registrados no sistema
@@ -129,13 +149,15 @@ export default function ListaServicosPage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEdit(service.id)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
+                            <ModalUpdateServices
+                              trigger={
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              }
+                              system="grooming"
+                              service={service}
+                            />
                             <Button
                               variant="ghost"
                               size="sm"

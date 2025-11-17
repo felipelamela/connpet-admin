@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 import { toast } from "sonner";
 
 interface Product {
@@ -27,6 +28,8 @@ interface Product {
 
 export default function ListaProdutosPage() {
   const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
  
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,7 +96,7 @@ export default function ListaProdutosPage() {
                 <Package className="h-5 w-5" />
                 <CardTitle>Produtos Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/petshop/produtos/cadastrar")}>
+              <Button onClick={() = className={buttonColors.default}> router.push("/petshop/produtos/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Novo Produto
               </Button>

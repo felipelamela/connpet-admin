@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/select";
 import { Pill, Save, X } from "lucide-react";
 import { toast } from "sonner";
-import router from "next/router";
+import { useModuleContext } from "@/hooks/useModuleContext";
+import { useRouter } from "next/navigation";
 
 interface MedicationFormData {
   petId: string;
@@ -26,7 +27,9 @@ interface MedicationFormData {
 }
 
 export default function CadastrarMedicamentoPage() {
- 
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<MedicationFormData>({
@@ -66,7 +69,6 @@ export default function CadastrarMedicamentoPage() {
         endDate: formData.endDate || null,
       };
 
-      console.log("Dados do medicamento:", medicationData);
       toast.success("Medicamento cadastrado com sucesso!");
       router.push("/clinica/medicamentos/lista");
     } catch (error) {
@@ -192,12 +194,11 @@ export default function CadastrarMedicamentoPage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.push("/clinica/medicamentos/lista")}
-                  disabled={isSubmitting}
-                  className="flex-1 sm:flex-initial"
+                  className={buttonColors.outline}
                 >
                   <X className="mr-2 h-4 w-4" />
                   Cancelar
-                </Button>
+                </Button> 
               </div>
             </CardContent>
           </Card>

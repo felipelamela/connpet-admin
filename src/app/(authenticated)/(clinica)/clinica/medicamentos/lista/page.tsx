@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Pill, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface Medication {
   id: string;
@@ -24,8 +26,9 @@ interface Medication {
 }
 
 export default function ListaMedicamentosPage() {
- 
-
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
   const [searchTerm, setSearchTerm] = useState("");
   const [medications, setMedications] = useState<Medication[]>([
     {
@@ -78,8 +81,8 @@ export default function ListaMedicamentosPage() {
                 <Pill className="h-5 w-5" />
                 <CardTitle>Medicamentos Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/clinica/medicamentos/cadastrar")}>
-                <Plus className="mr-2 h-4 w-4" />
+              <Button onClick={() => router.push("/clinica/medicamentos/cadastrar")} className="bg-blue-600 text-white hover:bg-blue-700">
+                <Plus className="mr-2 h-4 w-4 text-white" />
                 Novo Medicamento
               </Button>
             </div>

@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Bed, Plus, Search, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface Internation {
   id: string;
@@ -24,8 +26,9 @@ interface Internation {
 }
 
 export default function ListaInternacoesPage() {
- 
-
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
   const [searchTerm, setSearchTerm] = useState("");
   const [internations, setInternations] = useState<Internation[]>([
     {
@@ -65,8 +68,8 @@ export default function ListaInternacoesPage() {
                 <Bed className="h-5 w-5" />
                 <CardTitle>Internações Cadastradas</CardTitle>
               </div>
-              <Button onClick={() => router.push("/clinica/internacoes/cadastrar")}>
-                <Plus className="mr-2 h-4 w-4" />
+              <Button onClick={() => router.push("/clinica/internacoes/cadastrar")} className="bg-blue-600 text-white hover:bg-blue-700">
+                <Plus className="mr-2 h-4 w-4 text-white" />
                 Nova Internação
               </Button>
             </div>

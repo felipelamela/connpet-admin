@@ -14,19 +14,29 @@ import {
 } from "@/components/ui/table";
 import { Package, Plus, Search, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 import { toast } from "sonner";
+import { ModalCreateProducts } from "@/components/modals/ModalCreateProducts";
+import { ModalUpdateProducts } from "@/components/modals/ModalUpdateProducts";
 
 interface Product {
   id: string;
   name: string;
+  description?: string;
   type: string;
+  batchNumber?: string;
+  manufacturer?: string;
   quantity: number;
-  price: number;
-  validatedAt: string | null;
+  pricePay: number;
+  priceSale: number;
+  expirationDate: string;
+  active: boolean;
 }
 
 export default function ListaProdutosPage() {
   const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
  
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,18 +44,28 @@ export default function ListaProdutosPage() {
     {
       id: "1",
       name: "Ração Premium 15kg",
+      description: "Ração premium para cães adultos",
       type: "FOOD",
+      batchNumber: "LOTE-2024-001",
+      manufacturer: "Royal Canin",
       quantity: 50,
-      price: 89.90,
-      validatedAt: "2025-12-31",
+      pricePay: 60.00,
+      priceSale: 89.90,
+      expirationDate: "2025-12-31",
+      active: true,
     },
     {
       id: "2",
       name: "Antipulgas",
+      description: "Antipulgas e carrapatos",
       type: "MEDICINE",
+      batchNumber: "LOTE-2024-050",
+      manufacturer: "Bayer",
       quantity: 30,
-      price: 45.50,
-      validatedAt: "2026-06-30",
+      pricePay: 30.00,
+      priceSale: 45.50,
+      expirationDate: "2026-06-30",
+      active: true,
     },
   ]);
 
@@ -62,10 +82,6 @@ export default function ListaProdutosPage() {
       ACCESSORY: "Acessório",
     };
     return types[type] || type;
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/petshop/produtos/editar?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -93,10 +109,15 @@ export default function ListaProdutosPage() {
                 <Package className="h-5 w-5" />
                 <CardTitle>Produtos Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/petshop/produtos/cadastrar")}>
-                <Plus className="mr-2 h-4 w-4" />
-                Novo Produto
-              </Button>
+              <ModalCreateProducts 
+                trigger={
+                  <Button>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Novo Produto
+                  </Button>
+                } 
+                system="petshop" 
+              />
             </div>
             <CardDescription>
               Lista completa de produtos registrados no sistema
@@ -144,22 +165,24 @@ export default function ListaProdutosPage() {
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
-                          }).format(product.price)}
+                          }).format(product.priceSale)}
                         </TableCell>
                         <TableCell>
-                          {product.validatedAt
-                            ? new Date(product.validatedAt).toLocaleDateString("pt-BR")
+                          {product.expirationDate
+                            ? new Date(product.expirationDate).toLocaleDateString("pt-BR")
                             : "-"}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEdit(product.id)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
+                            <ModalUpdateProducts
+                              trigger={
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              }
+                              system="petshop"
+                              product={product}
+                            />
                             <Button
                               variant="ghost"
                               size="sm"

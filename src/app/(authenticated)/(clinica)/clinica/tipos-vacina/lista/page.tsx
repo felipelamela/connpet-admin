@@ -14,6 +14,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Syringe, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
+import { toast } from "sonner";
 
 interface VaccineType {
   id: string;
@@ -26,7 +29,9 @@ interface VaccineType {
 }
 
 export default function ListaTiposVacinaPage() {
- 
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [vaccineTypes, setVaccineTypes] = useState<VaccineType[]>([
@@ -91,7 +96,10 @@ export default function ListaTiposVacinaPage() {
                 <Syringe className="h-5 w-5" />
                 <CardTitle>Tipos de Vacina Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/tipos-vacina/cadastrar")}>
+              <Button
+                onClick={() => router.push("/clinica/tipos-vacina/cadastrar")}
+                className={buttonColors.default}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Novo Tipo de Vacina
               </Button>
@@ -155,7 +163,7 @@ export default function ListaTiposVacinaPage() {
                           <span
                             className={`px-2 py-1 rounded-full text-xs ${
                               vt.active
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-orange-100 text-orange-800"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
@@ -167,7 +175,7 @@ export default function ListaTiposVacinaPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/tipos-vacina/editar?id=${vt.id}`)}
+                              onClick={() => router.push(`/clinica/tipos-vacina/editar?id=${vt.id}`)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>

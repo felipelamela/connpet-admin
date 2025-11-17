@@ -67,7 +67,6 @@ export default function CadastrarProdutoPage() {
         validatedAt: formData.validatedAt || null,
       };
 
-      console.log("Dados do produto:", productData);
       toast.success("Produto cadastrado com sucesso!");
       router.push("/grooming/produtos/lista");
     } catch (error) {
@@ -200,7 +199,7 @@ export default function CadastrarProdutoPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/grooming/produtos/lista")}
+                  onClick={() = className={buttonColors.outline}> router.push("/grooming/produtos/lista")}
                   disabled={isSubmitting}
                   className="flex-1 sm:flex-initial"
                 >

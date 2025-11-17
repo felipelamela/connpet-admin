@@ -20,14 +20,24 @@ class ApiServer {
     // Configurar interceptor de resposta para tratamento de erros
     this.api.interceptors.response.use(
       (response: AxiosResponse) => {
-        console.log(`✅ [API] ${response.config.method?.toUpperCase()} ${response.config.url} → ${response.status}`);
         return response;
       },
       (error: AxiosError) => {
-        console.error(`❌ [API] ${error.config?.method?.toUpperCase()} ${error.config?.url} → ${error.response?.status || 'Network Error'}`, {
-          status: error.response?.status,
-          data: error.response?.data,
-        });
+        const url = error.config?.url || '';
+        const status = error.response?.status;
+        
+        // Não logar erros 401 esperados em endpoints de autenticação
+        // (são tratados silenciosamente pelo AuthContext)
+        const isAuthEndpoint = url.includes('/auth/me') || url.includes('/auth/verify');
+        const isExpected401 = status === 401 && isAuthEndpoint;
+        
+        if (!isExpected401) {
+          console.error(`❌ [API] ${error.config?.method?.toUpperCase()} ${url} → ${status || 'Network Error'}`, {
+            status: error.response?.status,
+            data: error.response?.data,
+          });
+        }
+        
         // Apenas propagar o erro, deixar o AuthContext gerenciar redirecionamentos
         return Promise.reject(error);
       }

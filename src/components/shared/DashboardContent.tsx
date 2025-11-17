@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Calendar, 
@@ -7,7 +5,10 @@ import {
   PawPrint, 
   Users, 
   TrendingUp,
-  DollarSign
+  DollarSign,
+  Wrench,
+  ClipboardList,
+  Hospital
 } from "lucide-react";
 
 interface DashboardContentProps {
@@ -16,6 +17,37 @@ interface DashboardContentProps {
 }
 
 export function DashboardContent({ moduleName, moduleColor }: DashboardContentProps) {
+  // Função para obter classes de cor baseadas no módulo
+  const getButtonColorClasses = () => {
+    if (moduleColor === "text-blue-600") {
+      return {
+        border: "border-blue-200 dark:border-blue-800",
+        hover: "hover:bg-blue-50 dark:hover:bg-blue-950",
+        hoverBorder: "hover:border-blue-300 dark:hover:border-blue-700"
+      };
+    } else if (moduleColor === "text-orange-600") {
+      return {
+        border: "border-orange-200 dark:border-orange-800",
+        hover: "hover:bg-orange-50 dark:hover:bg-orange-950",
+        hoverBorder: "hover:border-orange-300 dark:hover:border-orange-700"
+      };
+    } else if (moduleColor === "text-purple-600") {
+      return {
+        border: "border-purple-200 dark:border-purple-800",
+        hover: "hover:bg-purple-50 dark:hover:bg-purple-950",
+        hoverBorder: "hover:border-purple-300 dark:hover:border-purple-700"
+      };
+    }
+    // Fallback para verde
+    return {
+      border: "border-green-200 dark:border-green-800",
+      hover: "hover:bg-green-50 dark:hover:bg-green-950",
+      hoverBorder: "hover:border-green-300 dark:hover:border-green-700"
+    };
+  };
+
+  const buttonColors = getButtonColorClasses();
+
   const stats = [
     {
       title: "Agendamentos Hoje",
@@ -82,67 +114,87 @@ export function DashboardContent({ moduleName, moduleColor }: DashboardContentPr
         })}
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Ações Rápidas</CardTitle>
-          <CardDescription>
-            Atalhos para as funcionalidades mais usadas
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <Calendar className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Novo Agendamento</p>
-            </button>
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <PawPrint className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Cadastrar Pet</p>
-            </button>
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <Users className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Cadastrar Tutor</p>
-            </button>
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <Package className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Adicionar Produto</p>
-            </button>
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <TrendingUp className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Ver Relatórios</p>
-            </button>
-            <button className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
-              <DollarSign className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
-              <p className="text-sm font-medium">Faturamento</p>
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Quick Actions and Recent Activity Side by Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Ações Rápidas</CardTitle>
+            <CardDescription>
+              Atalhos para as funcionalidades mais usadas
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <Calendar className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Novo Agendamento</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <PawPrint className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Cadastrar Pet</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <Users className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Cadastrar Tutor</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <Package className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Adicionar Produto</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <TrendingUp className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Ver Relatórios</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <DollarSign className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Faturamento</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <Wrench className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Adicionar Serviço</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <ClipboardList className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Listagem de Exames</p>
+              </button>
+              <button className={`p-4 border rounded-lg transition-all ${buttonColors.border} ${buttonColors.hover} ${buttonColors.hoverBorder}`}>
+                <Hospital className={`h-6 w-6 ${moduleColor} mx-auto mb-2`} />
+                <p className="text-sm font-medium">Internação</p>
+              </button>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Atividades Recentes</CardTitle>
-          <CardDescription>
-            Últimas ações realizadas no sistema
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <div key={item} className="flex items-center space-x-4 border-b pb-4 last:border-0">
-                <div className={`w-2 h-2 rounded-full ${moduleColor === "text-blue-600" ? "bg-blue-600" : moduleColor === "text-green-600" ? "bg-green-600" : "bg-purple-600"}`}></div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">Novo agendamento criado</p>
-                  <p className="text-xs text-gray-500">Pet: Rex - Tutor: João Silva</p>
+        {/* Recent Activity */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Atividades Recentes</CardTitle>
+            <CardDescription>
+              Últimas ações realizadas no sistema
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <div key={item} className="flex items-center space-x-4 border-b pb-4 last:border-0">
+                  <div className={`w-2 h-2 rounded-full ${
+                    moduleColor === "text-blue-600" ? "bg-blue-600" : 
+                    moduleColor === "text-orange-600" ? "bg-orange-600" :
+                    moduleColor === "text-green-600" ? "bg-green-600" : 
+                    "bg-purple-600"
+                  }`}></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Novo agendamento criado</p>
+                    <p className="text-xs text-gray-500">Pet: Rex - Tutor: João Silva</p>
+                  </div>
+                  <p className="text-xs text-gray-400">Há 2 horas</p>
                 </div>
-                <p className="text-xs text-gray-400">Há 2 horas</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

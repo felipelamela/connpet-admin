@@ -19,10 +19,8 @@ export default function NotFound() {
 
     const timer = setTimeout(() => {
       if (isAuthenticated) {
-        console.log('🔄 [404] Usuário autenticado, redirecionando para /select-module');
         router.replace('/select-module');
       } else {
-        console.log('🔄 [404] Usuário não autenticado, redirecionando para /login');
         router.replace('/login');
       }
     }, 5000); 

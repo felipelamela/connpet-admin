@@ -21,7 +21,6 @@ export default function Home() {
     
     // Redirecionar apenas UMA vez
     const destination = isAuthenticated ? "/select-module" : "/login";
-    console.log(`🔄 [Home] Redirecionando para ${destination}`);
     
     // Usar timeout para evitar que o redirect aconteça durante o render
     setTimeout(() => {

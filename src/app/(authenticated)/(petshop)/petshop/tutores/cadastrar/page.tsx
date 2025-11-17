@@ -283,9 +283,6 @@ export default function CadastrarTutorPage() {
         },
       };
 
-      // TODO: Implementar chamada à API
-      console.log("Dados completos:", finalData);
-
       toast.success("Tutor, endereço e pet cadastrados com sucesso!");
       router.push("/petshop/dashboard");
     } catch (error) {
@@ -846,7 +843,7 @@ export default function CadastrarTutorPage() {
                     variant="outline"
                     onClick={handleBack}
                     disabled={currentStep === 0 || isSubmitting}
-                  >
+                   className={buttonColors.outline}>
                     <ChevronLeft className="mr-2 h-4 w-4" />
                     Voltar
                   </Button>
@@ -854,12 +851,12 @@ export default function CadastrarTutorPage() {
                   <div className="flex-1" />
 
                   {currentStep < 2 ? (
-                    <Button type="button" onClick={handleNext}>
+                    <Button type="button" onClick={handleNext} className={buttonColors.default}>
                       Próximo
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
                   ) : (
-                    <Button type="submit" disabled={isSubmitting}>
+                    <Button type="submit" disabled={isSubmitting} className={buttonColors.default}>
                       {isSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>

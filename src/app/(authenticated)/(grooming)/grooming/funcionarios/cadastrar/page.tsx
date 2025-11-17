@@ -66,7 +66,6 @@ export default function CadastrarFuncionarioPage() {
         role: formData.role,
       };
 
-      console.log("Dados do funcionário:", employeeData);
       toast.success("Funcionário cadastrado com sucesso!");
       router.push("/grooming/funcionarios/lista");
     } catch (error) {
@@ -207,7 +206,7 @@ export default function CadastrarFuncionarioPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/grooming/funcionarios/lista")}
+                  onClick={() = className={buttonColors.outline}> router.push("/grooming/funcionarios/lista")}
                   disabled={isSubmitting}
                   className="flex-1 sm:flex-initial"
                 >

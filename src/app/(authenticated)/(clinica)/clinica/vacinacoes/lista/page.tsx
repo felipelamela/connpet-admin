@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Syringe, Plus, Search, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface Vaccination {
   id: string;
@@ -25,8 +27,9 @@ interface Vaccination {
 }
 
 export default function ListaVacinacoesPage() {
- 
-
+  const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
   const [searchTerm, setSearchTerm] = useState("");
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([
     {
@@ -74,11 +77,12 @@ export default function ListaVacinacoesPage() {
                 <Button
                   variant="outline"
                   onClick={() => router.push("/clinica/vacinacoes/historico")}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
                   Histórico Completo
                 </Button>
-                <Button onClick={() => router.push("/clinica/vacinacoes/cadastrar")}>
-                  <Plus className="mr-2 h-4 w-4" />
+                <Button onClick={() => router.push("/clinica/vacinacoes/cadastrar")} className="bg-blue-600 text-white hover:bg-blue-700">
+                  <Plus className="mr-2 h-4 w-4 text-white" />
                   Nova Vacinação
                 </Button>
               </div>

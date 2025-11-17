@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Users, Plus, Search, Eye, Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface Tutor {
   id: string;
@@ -26,6 +27,8 @@ interface Tutor {
 
 export default function ListaTutoresPage() {
   const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
  
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,7 +70,7 @@ export default function ListaTutoresPage() {
                 <Users className="h-5 w-5" />
                 <CardTitle>Tutores Cadastrados</CardTitle>
               </div>
-              <Button onClick={() => router.push("/petshop/tutores/cadastrar")}>
+              <Button onClick={() = className={buttonColors.default}> router.push("/petshop/tutores/cadastrar")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Novo Tutor
               </Button>

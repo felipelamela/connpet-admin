@@ -2,10 +2,7 @@
 
 import { ClinicaSidebar } from "@/components/sidebars/ClinicaSidebar";
 
-/**
- * Layout para o módulo Clínica Veterinária
- * Usa sidebar específica com itens médicos
- */
+
 export default function ClinicaLayout({
   children,
 }: {

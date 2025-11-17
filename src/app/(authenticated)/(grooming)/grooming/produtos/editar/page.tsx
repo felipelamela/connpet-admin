@@ -16,6 +16,7 @@ import {
 import { Package, Save, X } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useModuleContext } from "@/hooks/useModuleContext";
 
 interface ProductFormData {
   name: string;
@@ -27,6 +28,8 @@ interface ProductFormData {
 
 export default function EditarProdutoPage() {
   const router = useRouter();
+  const { getButtonColors } = useModuleContext();
+  const buttonColors = getButtonColors();
  
 
   const searchParams = useSearchParams();
@@ -67,7 +70,6 @@ export default function EditarProdutoPage() {
         validatedAt: formData.validatedAt || null,
       };
 
-      console.log("Dados do produto:", productData);
       toast.success("Produto atualizado com sucesso!");
       router.push("/grooming/produtos/lista");
     } catch (error) {
@@ -200,7 +202,7 @@ export default function EditarProdutoPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/grooming/produtos/lista")}
+                  onClick={() = className={buttonColors.outline}> router.push("/grooming/produtos/lista")}
                   disabled={isSubmitting}
                   className="flex-1 sm:flex-initial"
                 >

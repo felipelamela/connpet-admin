@@ -43,7 +43,6 @@ export default function CadastrarServicoPage() {
         price: parseFloat(formData.price) || 0,
       };
 
-      console.log("Dados do serviço:", serviceData);
       toast.success("Serviço cadastrado com sucesso!");
       router.push("/petshop/servicos/lista");
     } catch (error) {
@@ -127,7 +126,7 @@ export default function CadastrarServicoPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/petshop/servicos/lista")}
+                  onClick={() = className={buttonColors.outline}> router.push("/petshop/servicos/lista")}
                   disabled={isSubmitting}
                   className="flex-1 sm:flex-initial"
                 >
